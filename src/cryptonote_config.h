@@ -42,7 +42,7 @@
 #define CRYPTONOTE_GETBLOCKTEMPLATE_MAX_BLOCK_SIZE	196608 //size of block (bytes) that is the maximum that miners will produce
 #define CRYPTONOTE_MAX_TX_SIZE                          1000000000
 #define CRYPTONOTE_PUBLIC_ADDRESS_TEXTBLOB_VER          0
-#define CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW            30
+#define CRYPTONOTE_MINED_MONEY_UNLOCK_WINDOW            10
 #define CURRENT_TRANSACTION_VERSION                     3
 #define CURRENT_BLOCK_MAJOR_VERSION                     7
 #define CURRENT_BLOCK_MINOR_VERSION                     7
@@ -100,7 +100,7 @@ static_assert(STAKING_PORTIONS % 3 == 0, "Use a multiple of three, so that it di
 
 #define ORPHANED_BLOCKS_MAX_COUNT                       100
 
-#define DIFFICULTY_TARGET_V2                            120  // seconds
+#define DIFFICULTY_TARGET_V2                            90  // seconds
 #define DIFFICULTY_WINDOW_V2                            60
 #define DIFFICULTY_LAG                                  15  // !!!
 #define DIFFICULTY_CUT                                  60  // timestamps to cut after sorting
@@ -187,9 +187,9 @@ namespace config
   uint16_t const RPC_DEFAULT_PORT = 22049;
   uint16_t const ZMQ_RPC_DEFAULT_PORT = 22044;
   boost::uuids::uuid const NETWORK_ID = { {
-        0x48 ,0xbe, 0x42, 0x61 ,0x64, 0x75, 0x74, 0x69, 0x4c, 0x2a, 0x61, 0x75, 0x66, 0x65, 0x79
-    } }; // Bender's nightmare
-  std::string const GENESIS_TX = "011e01ff000180d0dbc3f402023d9dc9616c36c7a891ed7cae45907d1998ef6403e595e9d7682968b3035e03202101e5a8375072f689324b8bd8d4be384ba57ac1178eb44ee28f1d3f388f8bac0eb0";
+        0x42 ,0xb8, 0x42, 0x61 ,0x64, 0x75, 0x74, 0x69, 0x9c, 0x2a, 0x61, 0xd5, 0x6d, 0x62, 0x79
+    } }; 
+  std::string const GENESIS_TX = "010a01ff000180a0faa0ccd7050274b211358ab1e3f6ad850d6d918ea83e93685690073ae8e56d08e36e343052682101dbcb31c8a2175deb80e94c2d2b54bd6f1adb41f07aa7eff8e14ddafa16d30dcf";
   uint32_t const GENESIS_NONCE = 1022201;
 
   uint64_t const GOVERNANCE_REWARD_INTERVAL_IN_BLOCKS = 100; // ((60 * 60 * 24 * 7) / DIFFICULTY_TARGET_V2);
