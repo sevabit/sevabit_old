@@ -189,7 +189,7 @@ namespace config
   boost::uuids::uuid const NETWORK_ID = { {
         0x42 ,0xb8, 0x42, 0x61 ,0x64, 0x75, 0x74, 0x69, 0x9c, 0x2a, 0x61, 0xd5, 0x6d, 0x62, 0x79
     } }; 
-  std::string const GENESIS_TX = "010a01ff000180a0faa0ccd70502d6b38ea450fb053407f8e5a53c606ca08f11fc67b12d65760269ab861920e45a21011da456ef063a4ae1abd166a5079f516e51bd4e83890d474955363083f7901a0e";
+  std::string const GENESIS_TX = "010a01ff000180d0dbc3f4020277d7fb23e182ebc01db3a7513ca888ad1baf89d9d3ad83afec11c52584d8a1be21019ed32ceb9336ca589287e7aeb57feca0a078c3ccc93eec11efbb3b003a8fa81e";
   uint32_t const GENESIS_NONCE = 1022201;
 
   uint64_t const GOVERNANCE_REWARD_INTERVAL_IN_BLOCKS = 100; // ((60 * 60 * 24 * 7) / DIFFICULTY_TARGET_V2);
