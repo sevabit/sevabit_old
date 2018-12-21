@@ -172,7 +172,11 @@ namespace cryptonote
       case UNDEFINED:
         break;
       case MAINNET:
-        //ADD_CHECKPOINT(1111111111111111111111111111111,     "08ff156d993012b0bdf2816c4bee47c9bbc7930593b70ee02574edddf15ee933");
+        ADD_CHECKPOINT(0,     "0c5455eb31db765b2e2a3c2e4ebf5b500c1a3e4ddc6b72d62ce23a04952af381");
+    	ADD_CHECKPOINT(1,     "9fcd2ffbafd27b0a2a16878e4c49a843e63e5a1be985fb4c327892ac650fb07d");
+    	ADD_CHECKPOINT(2,     "a6ace8e6763dca9b5dc83d8b3d2aade6bf52a06154a96b300232f831cdeb4456");
+    	ADD_CHECKPOINT(3,     "fa1d63ff24357b65dfd0a3cad155cb39a061a7619ae6a6d528dd93964bb55ebd");
+    	ADD_CHECKPOINT(4,     "b87d33d937d301a5f07f7bfa5414746f167e84843aeafbd834e858eb720df611");
         break;
     }
     return true;
