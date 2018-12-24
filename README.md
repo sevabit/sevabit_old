@@ -14,7 +14,7 @@ Portions Copyright (c) 2012-2013 The Cryptonote developers.
 - Telegram: [t.me/SevaBitCommunity](https://t.me/SevaBitCommunity)
 - Mail: [team@sevabit.network](mailto:team@sevabit.network)
 - GitHub: [https://github.com/sevabit-project/sevabit](https://github.com/sevabit-project/sevabit)
-- Discord: [https://discord.gg/67GXfD6](https://discord.gg/67GXfD6)
+- Discord: [https://discord.gg/MApcHzB](https://discord.gg/MApcHzB)
 
 ## Vulnerability disclosure
 
