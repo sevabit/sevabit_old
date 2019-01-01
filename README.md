@@ -10,15 +10,15 @@ Portions Copyright (c) 2012-2013 The Cryptonote developers.
 
 ## Development resources
 
-- Web: [sevabit.network](https://sevabit.network)
-- Telegram: [t.me/SevaBitCommunity](https://t.me/SevaBitCommunity)
-- Mail: [team@sevabit.network](mailto:team@sevabit.network)
-- GitHub: [https://github.com/sevabit-project/sevabit](https://github.com/sevabit-project/sevabit)
+- Web: [sevabit.network](http://sevabit.com)
+- Telegram: [t.me/sevabit](http://t.me/sevabit)
+- Mail: [admin@sevabit.com](mailto:admin@sevabit.com)
+- GitHub: [https://github.com/sevabit/sevabit](https://github.com/sevabit/sevabit)
 - Discord: [https://discord.gg/MApcHzB](https://discord.gg/MApcHzB)
 
 ## Vulnerability disclosure
 
-- Check out our [Vulnerability Response Process](https://sevabit-project.github.io/sevabit-docs/Contributing/VULNERABILITY_RESPONSE_LOKI), encourages prompt disclosure of any Vulnerabilities
+- Check out our [Vulnerability Response Process](https://sevabit-project.github.io/sevabit-docs/Contributing/VULNERABILITY_RESPONSE_SEVA), encourages prompt disclosure of any Vulnerabilities
 
 ## Information
 
