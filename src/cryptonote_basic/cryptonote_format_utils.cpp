@@ -1396,10 +1396,11 @@ namespace cryptonote
     
     // FIX CN-HEAVY FOR SEVA
     if(height >= 9000) {
-      cn_variant = 0; // HEAVYYYYYYY !!
+      crypto::cn_slow_hash(bd.data(), bd.size(), res, 0); // HEAVYYYYYYY !!
+    } else {
+      crypto::cn_slow_hash(bd.data(), bd.size(), res, cn_variant); // CN CLASSIC (maybe)
     }
     
-    crypto::cn_slow_hash(bd.data(), bd.size(), res, cn_variant);
     return true;
   }
   //---------------------------------------------------------------
