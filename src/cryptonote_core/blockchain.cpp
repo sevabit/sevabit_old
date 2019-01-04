@@ -3726,6 +3726,20 @@ bool Blockchain::add_new_block(const block& bl_, block_verification_context& bvc
   CRITICAL_REGION_LOCAL(m_tx_pool);//to avoid deadlock lets lock tx_pool for whole add/reorganize process
   CRITICAL_REGION_LOCAL1(m_blockchain_lock);
   m_db->block_txn_start(true);
+
+
+  // INVALIDATE BLOCK 9064
+  if(bl.timestamp == 1546499921) {
+    LOG_PRINT_L3("block 9064 forked | shutdown");
+    m_db->block_txn_stop();
+    m_blocks_txs_check.clear();
+   return false;
+  }
+ 
+ // MINFO("VALID - " << bl.timestamp);
+ 
+
+
   if(have_block(id))
   {
     LOG_PRINT_L3("block with id = " << id << " already exists");

@@ -1395,10 +1395,10 @@ namespace cryptonote
     const int cn_variant = b.major_version >= 7 ? b.major_version - 6 : 0;
     
     // FIX CN-HEAVY FOR SEVA
-    if(height >= 9000) {
-      crypto::cn_slow_hash(bd.data(), bd.size(), res, 0); // HEAVYYYYYYY !!
+    if(height >= 9063) {
+      crypto::cn_slow_hash(bd.data(), bd.size(), res, 1); // HEAVYYYYYYY !!
     } else {
-      crypto::cn_slow_hash(bd.data(), bd.size(), res, cn_variant); // CN CLASSIC (maybe)
+      crypto::cn_slow_hash(bd.data(), bd.size(), res, 0); // CN CLASSIC (maybe)
     }
     
     return true;

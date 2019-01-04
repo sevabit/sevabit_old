@@ -72,7 +72,7 @@ namespace crypto {
     return h;
   }
 
-  inline void cn_slow_hash(const void *data, std::size_t length, hash &hash, int variant = 0) {
+  inline void cn_slow_hash(const void *data, std::size_t length, hash &hash, int variant = 1) {
     static thread_local cn_pow_hash_v2 ctx2;
     static thread_local cn_pow_hash_v1 ctx1 = cn_pow_hash_v1::make_borrowed(ctx2);
     if (variant == 0) {
@@ -82,7 +82,7 @@ namespace crypto {
     }
   }
 
-  inline void cn_slow_hash_prehashed(const void *data, std::size_t length, hash &hash, int variant = 0) {
+  inline void cn_slow_hash_prehashed(const void *data, std::size_t length, hash &hash, int variant = 1) {
     static thread_local cn_pow_hash_v2 ctx2;
     static thread_local cn_pow_hash_v1 ctx1 = cn_pow_hash_v1::make_borrowed(ctx2);
     if (variant == 0) {
