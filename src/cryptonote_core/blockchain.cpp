@@ -3728,18 +3728,14 @@ bool Blockchain::add_new_block(const block& bl_, block_verification_context& bvc
   m_db->block_txn_start(true);
 
 
-  // INVALIDATE BLOCK 9064
-  if(bl.timestamp == 1546499921) {
-    LOG_PRINT_L3("block 9064 forked | shutdown");
+  // INVALIDATE BLOCK 9446
+  if(bl.timestamp == 1546502574) {
+    LOG_PRINT_L3("block 9446 forked | shutdown");
     m_db->block_txn_stop();
     m_blocks_txs_check.clear();
    return false;
   }
  
- // MINFO("VALID - " << bl.timestamp);
- 
-
-
   if(have_block(id))
   {
     LOG_PRINT_L3("block with id = " << id << " already exists");
