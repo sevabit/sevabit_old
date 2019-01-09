@@ -39,7 +39,7 @@
 static_assert(std::numeric_limits<double>::is_iec559, "We require IEEE standard compliant doubles.");
 
 double
-loki_round (double x)
+sevabit_round (double x)
 {
   /* 2^(DBL_MANT_DIG-1).  */
   static const double TWO_MANT_DIG =

@@ -50,9 +50,9 @@ set(mnemonics_private_headers
   esperanto.h
   lojban.h)
 
-loki_private_headers(mnemonics
+sevabit_private_headers(mnemonics
   ${mnemonics_private_headers})
-loki_add_library(mnemonics
+sevabit_add_library(mnemonics
   ${mnemonics_sources}
   ${mnemonics_headers}
   ${mnemonics_private_headers})

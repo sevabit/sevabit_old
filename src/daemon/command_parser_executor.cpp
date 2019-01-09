@@ -32,8 +32,8 @@
 #include "version.h"
 #include "daemon/command_parser_executor.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "daemon"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "daemon"
 
 namespace daemonize {
 
@@ -740,7 +740,7 @@ bool t_command_parser_executor::sync_info(const std::vector<std::string>& args)
 
 bool t_command_parser_executor::version(const std::vector<std::string>& args)
 {
-  std::cout << "SevaBit '" << LOKI_RELEASE_NAME << "' (v" << LOKI_VERSION_FULL << ")" << std::endl;
+  std::cout << "SevaBit '" << SEVABIT_RELEASE_NAME << "' (v" << SEVABIT_VERSION_FULL << ")" << std::endl;
   return true;
 }
 

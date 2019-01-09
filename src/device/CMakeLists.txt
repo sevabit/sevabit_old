@@ -60,10 +60,10 @@ endif()
 set(device_private_headers)
 
 
-loki_private_headers(device
+sevabit_private_headers(device
   ${device_private_headers})
 
-loki_add_library(device
+sevabit_add_library(device
   ${device_sources}
   ${device_headers}
   ${device_private_headers})

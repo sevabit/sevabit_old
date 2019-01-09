@@ -62,9 +62,9 @@ set(cryptonote_basic_private_headers
   tx_extra.h
   verification_context.h)
 
-loki_private_headers(cryptonote_basic
+sevabit_private_headers(cryptonote_basic
   ${cryptonote_basic_private_headers})
-loki_add_library(cryptonote_basic
+sevabit_add_library(cryptonote_basic
   ${cryptonote_basic_sources}
   ${cryptonote_basic_headers}
   ${cryptonote_basic_private_headers})

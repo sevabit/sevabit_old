@@ -43,11 +43,11 @@
 #include <string>
 #include <vector>
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "service_nodes"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "service_nodes"
 
 
-namespace loki
+namespace sevabit
 {
   static crypto::hash make_hash_from(uint64_t block_height, uint32_t service_node_index)
   {
@@ -323,5 +323,5 @@ namespace loki
       }
     }
   }
-}; // namespace loki
+}; // namespace sevabit
 

@@ -15,13 +15,13 @@ See also each utility's "--help" option.
 
 `$ sevabit-blockchain-export`
 
-This loads the existing blockchain and exports it to `$LOKI_DATA_DIR/export/blockchain.raw`
+This loads the existing blockchain and exports it to `$SEVABIT_DATA_DIR/export/blockchain.raw`
 
 ### Import the exported file
 
 `$ sevabit-blockchain-import`
 
-This imports blocks from `$LOKI_DATA_DIR/export/blockchain.raw` (exported using the
+This imports blocks from `$SEVABIT_DATA_DIR/export/blockchain.raw` (exported using the
 `sevabit-blockchain-export` tool as described above) into the current database.
 
 Defaults: `--batch on`, `--batch size 20000`, `--verify on`

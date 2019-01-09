@@ -30,7 +30,7 @@
 set(gen_multisig_sources
   gen_multisig.cpp)
 
-loki_add_executable(gen_multisig
+sevabit_add_executable(gen_multisig
   ${gen_multisig_sources})
 target_link_libraries(gen_multisig
   PRIVATE

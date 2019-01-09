@@ -43,8 +43,8 @@ namespace hw {
 
   #ifdef WITH_DEVICE_LEDGER
 
-    #undef LOKI_DEFAULT_LOG_CATEGORY
-    #define LOKI_DEFAULT_LOG_CATEGORY "device.ledger"
+    #undef SEVABIT_DEFAULT_LOG_CATEGORY
+    #define SEVABIT_DEFAULT_LOG_CATEGORY "device.ledger"
 
     /* ===================================================================== */
     /* ===                           Debug                              ==== */

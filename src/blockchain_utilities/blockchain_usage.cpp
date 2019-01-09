@@ -38,8 +38,8 @@
 #include "blockchain_db/db_types.h"
 #include "version.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "bcutil"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "bcutil"
 
 namespace po = boost::program_options;
 using namespace epee;
@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 
   if (command_line::get_arg(vm, command_line::arg_help))
   {
-    std::cout << "SevaBit '" << LOKI_RELEASE_NAME << "' (v" << LOKI_VERSION_FULL << ")" << ENDL << ENDL;
+    std::cout << "SevaBit '" << SEVABIT_RELEASE_NAME << "' (v" << SEVABIT_VERSION_FULL << ")" << ENDL << ENDL;
     std::cout << desc_options << std::endl;
     return 1;
   }
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
     Blockchain m_blockchain;
     tx_memory_pool m_mempool;
     service_nodes::service_node_list m_service_node_list;
-    loki::deregister_vote_pool m_deregister_vote_pool;
+    sevabit::deregister_vote_pool m_deregister_vote_pool;
     BlockchainObjects() :
       m_blockchain(m_mempool, m_service_node_list, m_deregister_vote_pool),
       m_service_node_list(m_blockchain),

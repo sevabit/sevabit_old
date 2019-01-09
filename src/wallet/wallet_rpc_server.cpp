@@ -54,8 +54,8 @@ using namespace epee;
 #include "rpc/core_rpc_server_commands_defs.h"
 #include "daemonizer/daemonizer.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "wallet.rpc"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "wallet.rpc"
 
 namespace
 {

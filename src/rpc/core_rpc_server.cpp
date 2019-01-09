@@ -51,8 +51,8 @@ using namespace epee;
 #include "p2p/net_node.h"
 #include "version.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "daemon.rpc"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "daemon.rpc"
 
 #define MAX_RESTRICTED_FAKE_OUTS_COUNT 40
 #define MAX_RESTRICTED_GLOBAL_FAKE_OUTS_COUNT 5000
@@ -1986,7 +1986,7 @@ bool core_rpc_server::on_get_peers(const COMMAND_RPC_GET_PEER_LIST_FULL::request
       res.status = "Error checking for updates";
       return true;
     }
-    if (tools::vercmp(version.c_str(), LOKI_VERSION) <= 0)
+    if (tools::vercmp(version.c_str(), SEVABIT_VERSION) <= 0)
     {
       res.update = false;
       res.status = CORE_RPC_STATUS_OK;

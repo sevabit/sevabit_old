@@ -49,7 +49,7 @@ namespace service_nodes
   struct quorum_state;
 };
 
-namespace loki
+namespace sevabit
 {
   namespace service_node_deregister
   {
@@ -133,5 +133,5 @@ namespace loki
       std::unordered_map<deregister_group, std::vector<deregister>, deregister_group_hasher> m_deregisters;
       mutable epee::critical_section m_lock;
   };
-}; // namespace loki
+}; // namespace sevabit
 

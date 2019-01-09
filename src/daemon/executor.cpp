@@ -36,8 +36,8 @@
 
 #include <string>
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "daemon"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "daemon"
 
 namespace daemonize
 {
@@ -59,7 +59,7 @@ namespace daemonize
       boost::program_options::variables_map const & vm
     )
   {
-    LOG_PRINT_L0("SevaBit '" << LOKI_RELEASE_NAME << "' (v" << LOKI_VERSION_FULL << ") Daemonised");
+    LOG_PRINT_L0("SevaBit '" << SEVABIT_RELEASE_NAME << "' (v" << SEVABIT_VERSION_FULL << ") Daemonised");
     return t_daemon{vm};
   }
 

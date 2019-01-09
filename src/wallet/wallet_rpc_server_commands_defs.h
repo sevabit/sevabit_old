@@ -37,8 +37,8 @@
 #include "crypto/hash.h"
 #include "wallet_rpc_server_error_codes.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "wallet.rpc"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "wallet.rpc"
 
 // When making *any* change here, bump minor
 // If the change is incompatible, then bump major and set minor to 0

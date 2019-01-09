@@ -44,10 +44,10 @@ using namespace epee;
 #include "common/int-util.h"
 #include "common/dns_utils.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "cn"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "cn"
 
-double loki_exp2(double);
+double sevabit_exp2(double);
 
 namespace cryptonote {
 
@@ -109,7 +109,7 @@ namespace cryptonote {
     }
 
     if (version >= 8)
-      base_reward = 28000000000.0 + 100000000000.0 / loki_exp2(height / (720.0 * 90.0)); // halve every 90 days.
+      base_reward = 28000000000.0 + 100000000000.0 / sevabit_exp2(height / (720.0 * 90.0)); // halve every 90 days.
 
     uint64_t full_reward_zone = get_min_block_weight(version);
 

@@ -59,8 +59,8 @@
 #include "service_node_deregister.h"
 #include "service_node_list.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "blockchain"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "blockchain"
 
 #define FIND_BLOCKCHAIN_SUPPLEMENT_MAX_SIZE (100*1024*1024) // 100 MB
 
@@ -124,7 +124,7 @@ static const struct {
 };
 
 //------------------------------------------------------------------
-Blockchain::Blockchain(tx_memory_pool& tx_pool, service_nodes::service_node_list& service_node_list, loki::deregister_vote_pool& deregister_vote_pool):
+Blockchain::Blockchain(tx_memory_pool& tx_pool, service_nodes::service_node_list& service_node_list, sevabit::deregister_vote_pool& deregister_vote_pool):
   m_db(), m_tx_pool(tx_pool), m_hardfork(NULL), m_timestamps_and_difficulties_height(0), m_current_block_cumul_weight_limit(0), m_current_block_cumul_weight_median(0),
   m_enforce_dns_checkpoints(false), m_max_prepare_blocks_threads(4), m_db_sync_on_blocks(true), m_db_sync_threshold(1), m_db_sync_mode(db_async), m_db_default_sync(false), m_fast_sync(true), m_show_time_stats(false), m_sync_counter(0), m_bytes_to_sync(0), m_cancel(false),
   m_difficulty_for_next_block_top_hash(crypto::null_hash),
@@ -1138,7 +1138,7 @@ bool Blockchain::validate_miner_transaction(const block& b, size_t cumulative_bl
   std::vector<size_t> last_blocks_weights;
   get_last_n_blocks_weights(last_blocks_weights, CRYPTONOTE_REWARD_BLOCKS_WINDOW);
 
-  loki_block_reward_context block_reward_context = {};
+  sevabit_block_reward_context block_reward_context = {};
   block_reward_context.fee                       = fee;
   block_reward_context.height                    = height;
   if (!calc_batched_governance_reward(height, block_reward_context.batched_governance))
@@ -1148,7 +1148,7 @@ bool Blockchain::validate_miner_transaction(const block& b, size_t cumulative_bl
   }
 
   block_reward_parts reward_parts;
-  if (!get_loki_block_reward(epee::misc_utils::median(last_blocks_weights), cumulative_block_weight, already_generated_coins, version, reward_parts, block_reward_context))
+  if (!get_sevabit_block_reward(epee::misc_utils::median(last_blocks_weights), cumulative_block_weight, already_generated_coins, version, reward_parts, block_reward_context))
   {
     MERROR_VER("block weight " << cumulative_block_weight << " is bigger than allowed for this blockchain");
     return false;
@@ -1358,7 +1358,7 @@ bool Blockchain::create_block_template(block& b, const account_public_address& m
   //make blocks coin-base tx looks close to real coinbase tx to get truthful blob weight
   uint8_t hf_version = m_hardfork->get_current_version();
 
-  loki_miner_tx_context miner_tx_context(m_nettype,
+  sevabit_miner_tx_context miner_tx_context(m_nettype,
                                          m_service_node_list.select_winner(b.prev_id),
                                          m_service_node_list.get_winner_addresses_and_portions(b.prev_id));
 
@@ -2922,7 +2922,7 @@ bool Blockchain::check_tx_inputs(transaction& tx, tx_verification_context &tvc, 
       return false;
     }
 
-    if (!loki::service_node_deregister::verify_deregister(nettype(), deregister, tvc.m_vote_ctx, *quorum_state))
+    if (!sevabit::service_node_deregister::verify_deregister(nettype(), deregister, tvc.m_vote_ctx, *quorum_state))
     {
       tvc.m_verifivation_failed = true;
       MERROR_VER("tx " << get_transaction_hash(tx) << ": version 3 deregister_tx could not be completely verified reason: " << print_vote_verification_context(tvc.m_vote_ctx));
@@ -2944,11 +2944,11 @@ bool Blockchain::check_tx_inputs(transaction& tx, tx_verification_context &tvc, 
       }
 
       uint64_t delta_height = curr_height - deregister.block_height;
-      if (delta_height >= loki::service_node_deregister::DEREGISTER_LIFETIME_BY_HEIGHT)
+      if (delta_height >= sevabit::service_node_deregister::DEREGISTER_LIFETIME_BY_HEIGHT)
       {
         LOG_PRINT_L1("Received deregister tx for height: " << deregister.block_height
                      << " and service node: "     << deregister.service_node_index
-                     << ", is older than: "       << loki::service_node_deregister::DEREGISTER_LIFETIME_BY_HEIGHT
+                     << ", is older than: "       << sevabit::service_node_deregister::DEREGISTER_LIFETIME_BY_HEIGHT
                      << " blocks and has been rejected. The current height is: " << curr_height);
         tvc.m_vote_ctx.m_invalid_block_height = true;
         tvc.m_verifivation_failed             = true;
@@ -2957,7 +2957,7 @@ bool Blockchain::check_tx_inputs(transaction& tx, tx_verification_context &tvc, 
     }
 
     const uint64_t height            = deregister.block_height;
-    const size_t num_blocks_to_check = loki::service_node_deregister::DEREGISTER_LIFETIME_BY_HEIGHT;
+    const size_t num_blocks_to_check = sevabit::service_node_deregister::DEREGISTER_LIFETIME_BY_HEIGHT;
 
     std::vector<std::pair<cryptonote::blobdata,block>> blocks;
     std::vector<cryptonote::blobdata> txs;

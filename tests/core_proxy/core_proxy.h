@@ -109,7 +109,7 @@ namespace tests
     uint64_t prevalidate_block_hashes(uint64_t height, const std::vector<crypto::hash> &hashes) { return 0; }
 
     // TODO(sevabit): Write tests
-    virtual void set_deregister_votes_relayed(const std::vector<loki::service_node_deregister::vote>& votes) {}
-    bool add_deregister_vote(const loki::service_node_deregister::vote& vote, cryptonote::vote_verification_context &vvc) { return false; }
+    virtual void set_deregister_votes_relayed(const std::vector<sevabit::service_node_deregister::vote>& votes) {}
+    bool add_deregister_vote(const sevabit::service_node_deregister::vote& vote, cryptonote::vote_verification_context &vvc) { return false; }
   };
 }

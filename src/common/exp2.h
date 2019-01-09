@@ -29,4 +29,4 @@
 
 #pragma once
 
-double loki_exp2(double);
+double sevabit_exp2(double);

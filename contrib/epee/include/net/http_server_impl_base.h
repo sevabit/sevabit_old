@@ -36,8 +36,8 @@
 #include "net/http_server_cp2.h"
 #include "net/http_server_handlers_map2.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "net.http"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "net.http"
 
 namespace epee
 {

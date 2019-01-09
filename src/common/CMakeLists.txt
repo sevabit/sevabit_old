@@ -86,9 +86,9 @@ set(common_private_headers
   updates.h
   aligned.h)
 
-loki_private_headers(common
+sevabit_private_headers(common
   ${common_private_headers})
-loki_add_library(common
+sevabit_add_library(common
   ${common_sources}
   ${common_headers}
   ${common_private_headers}

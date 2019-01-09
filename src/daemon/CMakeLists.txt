@@ -63,9 +63,9 @@ set(daemon_private_headers
   ../p2p/p2p_protocol_defs.h
   ../p2p/stdafx.h)
 
-loki_private_headers(daemon
+sevabit_private_headers(daemon
   ${daemon_private_headers})
-loki_add_executable(daemon
+sevabit_add_executable(daemon
   ${daemon_sources}
   ${daemon_headers}
   ${daemon_private_headers})

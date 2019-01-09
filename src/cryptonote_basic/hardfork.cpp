@@ -34,8 +34,8 @@
 #include "blockchain_db/blockchain_db.h"
 #include "hardfork.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "hardfork"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "hardfork"
 
 using namespace cryptonote;
 

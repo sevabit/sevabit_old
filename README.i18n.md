@@ -1,7 +1,7 @@
 SevaBit daemon internationalization
 ==================================
 
-The SevaBit command line tools can be translated in various languages. If you wish to contribute and need help/support, contact the [SevaBit Localization Workgroup on Taiga](https://taiga.getloki.org/project/erciccione-sevabit-localization/) or come chat on `#sevabit-translations` (Freenode/IRC, riot/matrix, MatterMost)
+The SevaBit command line tools can be translated in various languages. If you wish to contribute and need help/support, contact the [SevaBit Localization Workgroup on Taiga](https://taiga.getsevabit.org/project/erciccione-sevabit-localization/) or come chat on `#sevabit-translations` (Freenode/IRC, riot/matrix, MatterMost)
 
 In order to use the same translation workflow as the [SevaBit GUI](https://github.com/sevabit-project/sevabit-gui), they use Qt Linguist translation files.  However, to avoid the dependencies on Qt this normally implies, they use a custom loader to read those files at runtime.
 
@@ -19,11 +19,11 @@ To update ts files after changing source code:
 
 To add a new language, eg Spanish (ISO code es):
 
-    cp translations/sevabit.ts translations/loki_es.ts
+    cp translations/sevabit.ts translations/sevabit_es.ts
 
 To edit translations for Spanish:
 
-    linguist translations/loki_es.ts
+    linguist translations/sevabit_es.ts
 
 To build translations after modifying them:
 

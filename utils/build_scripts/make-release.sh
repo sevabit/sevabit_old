@@ -32,7 +32,7 @@ curl --header 'PRIVATE-TOKEN: '"$TOKEN" "https://gitlab.com/api/v4/projects/7515
   do
     id=$(echo $line | cut -d' ' -f1)
     build=$(echo $line | cut -d' ' -f2)
-    curl -L --header 'PRIVATE-TOKEN: '"$TOKEN" "https://gitlab.com/lokiproject/sevabit/-/jobs/$id/artifacts/download" -o artifacts-$build.zip
+    curl -L --header 'PRIVATE-TOKEN: '"$TOKEN" "https://gitlab.com/sevabitproject/sevabit/-/jobs/$id/artifacts/download" -o artifacts-$build.zip
     unzip artifacts-$build.zip
     mv build/release/bin sevabit-$build-x64-$version
     zip -r sevabit-$build-x64-$version.zip sevabit-$build-x64-$version

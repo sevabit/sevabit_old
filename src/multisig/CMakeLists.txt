@@ -35,10 +35,10 @@ set(multisig_headers)
 set(multisig_private_headers
   multisig.h)
 
-loki_private_headers(multisig
+sevabit_private_headers(multisig
   ${multisig_private_headers})
 
-loki_add_library(multisig
+sevabit_add_library(multisig
   ${multisig_sources}
   ${multisig_headers}
   ${multisig_private_headers})
