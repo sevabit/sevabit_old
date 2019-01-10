@@ -31,7 +31,7 @@
 #include "blockchain.h"
 #include "cryptonote_protocol/cryptonote_protocol_handler_common.h"
 
-namespace loki
+namespace sevabit
 {
   class deregister_vote_pool;
 };
@@ -58,7 +58,7 @@ namespace service_nodes
     bool handle_uptime_proof(const cryptonote::NOTIFY_UPTIME_PROOF::request &proof);
 
     static const uint64_t REORG_SAFETY_BUFFER_IN_BLOCKS = 20;
-    static_assert(REORG_SAFETY_BUFFER_IN_BLOCKS < loki::service_node_deregister::VOTE_LIFETIME_BY_HEIGHT,
+    static_assert(REORG_SAFETY_BUFFER_IN_BLOCKS < sevabit::service_node_deregister::VOTE_LIFETIME_BY_HEIGHT,
                   "Safety buffer should always be less than the vote lifetime");
     bool prune_uptime_proof();
 

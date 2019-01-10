@@ -949,7 +949,7 @@ TEST(Serialization, portability_unsigned_tx)
   const bool restricted = false;
   tools::wallet2 w(cryptonote::TESTNET, restricted);
 
-  const boost::filesystem::path filename    = unit_test::data_dir / "unsigned_loki_tx";
+  const boost::filesystem::path filename    = unit_test::data_dir / "unsigned_sevabit_tx";
   const boost::filesystem::path wallet_file = unit_test::data_dir / "wallet_testnet";
   const string password = "test";
   w.load(wallet_file.string(), password);
@@ -1148,7 +1148,7 @@ TEST(Serialization, portability_signed_tx)
   const bool restricted = false;
   tools::wallet2 w(cryptonote::TESTNET, restricted);
 
-  const boost::filesystem::path filename    = unit_test::data_dir / "signed_loki_tx";
+  const boost::filesystem::path filename    = unit_test::data_dir / "signed_sevabit_tx";
   const boost::filesystem::path wallet_file = unit_test::data_dir / "wallet_testnet";
   const string password = "test";
   w.load(wallet_file.string(), password);

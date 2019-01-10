@@ -61,8 +61,8 @@ using namespace epee;
 #include "wipeable_string.h"
 #include "common/i18n.h"
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "cn"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "cn"
 
 DISABLE_VS_WARNINGS(4355)
 
@@ -1284,7 +1284,7 @@ namespace cryptonote
     m_mempool.set_relayed(txs);
   }
   //-----------------------------------------------------------------------------------------------
-  void core::set_deregister_votes_relayed(const std::vector<loki::service_node_deregister::vote>& votes)
+  void core::set_deregister_votes_relayed(const std::vector<sevabit::service_node_deregister::vote>& votes)
   {
     m_deregister_vote_pool.set_relayed(votes);
   }
@@ -1709,7 +1709,7 @@ namespace cryptonote
     if (!tools::check_updates(software, buildtag, version, hash))
       return false;
 
-    if (tools::vercmp(version.c_str(), LOKI_VERSION) <= 0)
+    if (tools::vercmp(version.c_str(), SEVABIT_VERSION) <= 0)
     {
       m_update_available = false;
       return true;
@@ -1913,16 +1913,16 @@ namespace cryptonote
     return result;
   }
   //-----------------------------------------------------------------------------------------------
-  bool core::add_deregister_vote(const loki::service_node_deregister::vote& vote, vote_verification_context &vvc)
+  bool core::add_deregister_vote(const sevabit::service_node_deregister::vote& vote, vote_verification_context &vvc)
   {
     uint64_t latest_block_height = std::max(get_current_blockchain_height(), get_target_blockchain_height());
     uint64_t delta_height = latest_block_height - vote.block_height;
 
-    if (vote.block_height < latest_block_height && delta_height >= loki::service_node_deregister::VOTE_LIFETIME_BY_HEIGHT)
+    if (vote.block_height < latest_block_height && delta_height >= sevabit::service_node_deregister::VOTE_LIFETIME_BY_HEIGHT)
     {
       LOG_PRINT_L1("Received vote for height: " << vote.block_height
                 << " and service node: "     << vote.service_node_index
-                << ", is older than: "       << loki::service_node_deregister::VOTE_LIFETIME_BY_HEIGHT
+                << ", is older than: "       << sevabit::service_node_deregister::VOTE_LIFETIME_BY_HEIGHT
                 << " blocks and has been rejected.");
       vvc.m_invalid_block_height = true;
     }

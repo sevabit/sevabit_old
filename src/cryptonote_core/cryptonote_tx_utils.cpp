@@ -224,7 +224,7 @@ namespace cryptonote
     return reward;
   }
 
-  loki_miner_tx_context::loki_miner_tx_context(network_type type, crypto::public_key winner, std::vector<std::pair<account_public_address, stake_portions>> winner_info)
+  sevabit_miner_tx_context::sevabit_miner_tx_context(network_type type, crypto::public_key winner, std::vector<std::pair<account_public_address, stake_portions>> winner_info)
     : nettype(type)
     , snode_winner_key(winner)
     , snode_winner_info(winner_info)
@@ -242,7 +242,7 @@ namespace cryptonote
       transaction& tx,
       const blobdata& extra_nonce,
       uint8_t hard_fork_version,
-      const loki_miner_tx_context &miner_tx_context)
+      const sevabit_miner_tx_context &miner_tx_context)
   {
     tx.vin.clear();
     tx.vout.clear();
@@ -276,14 +276,14 @@ namespace cryptonote
     txin_gen in;
     in.height = height;
 
-    loki_block_reward_context block_reward_context = {};
+    sevabit_block_reward_context block_reward_context = {};
     block_reward_context.fee                       = fee;
     block_reward_context.height                    = height;
     block_reward_context.snode_winner_info         = miner_tx_context.snode_winner_info;
     block_reward_context.batched_governance        = miner_tx_context.batched_governance;
 
     block_reward_parts reward_parts;
-    if(!get_loki_block_reward(median_weight, current_block_weight, already_generated_coins, hard_fork_version, reward_parts, block_reward_context))
+    if(!get_sevabit_block_reward(median_weight, current_block_weight, already_generated_coins, hard_fork_version, reward_parts, block_reward_context))
     {
       LOG_PRINT_L0("Failed to calculate block reward");
       return false;
@@ -382,11 +382,11 @@ namespace cryptonote
     return true;
   }
 
-  bool get_loki_block_reward(size_t median_weight, size_t current_block_weight, uint64_t already_generated_coins, int hard_fork_version, block_reward_parts &result, const loki_block_reward_context &loki_context)
+  bool get_sevabit_block_reward(size_t median_weight, size_t current_block_weight, uint64_t already_generated_coins, int hard_fork_version, block_reward_parts &result, const sevabit_block_reward_context &sevabit_context)
   {
     result = {};
     uint64_t base_reward;
-    if (!get_base_block_reward(median_weight, current_block_weight, already_generated_coins, base_reward, hard_fork_version, loki_context.height))
+    if (!get_base_block_reward(median_weight, current_block_weight, already_generated_coins, base_reward, hard_fork_version, sevabit_context.height))
     {
       MERROR("Failed to calculate base block reward");
       return false;
@@ -407,8 +407,8 @@ namespace cryptonote
     //TODO: declining governance reward schedule
     result.original_base_reward = base_reward;
     result.service_node_total   = service_node_reward_formula(base_reward, hard_fork_version);
-    if (loki_context.snode_winner_info.empty()) result.service_node_paid = calculate_sum_of_portions(service_nodes::null_winner,     result.service_node_total);
-    else                                        result.service_node_paid = calculate_sum_of_portions(loki_context.snode_winner_info, result.service_node_total);
+    if (sevabit_context.snode_winner_info.empty()) result.service_node_paid = calculate_sum_of_portions(service_nodes::null_winner,     result.service_node_total);
+    else                                        result.service_node_paid = calculate_sum_of_portions(sevabit_context.snode_winner_info, result.service_node_total);
 
     result.adjusted_base_reward = result.original_base_reward;
     if (hard_fork_version >= network_version_10_bulletproofs)
@@ -417,7 +417,7 @@ namespace cryptonote
       // reward as they are not included and batched into a later block. If we
       // calculated a (governance reward > 0), then this is the batched height,
       // add it to the adjusted base reward afterwards
-      result.governance            = loki_context.batched_governance;
+      result.governance            = sevabit_context.batched_governance;
       result.adjusted_base_reward -= governance_reward_formula(result.original_base_reward);
 
       if (result.governance > 0)
@@ -429,7 +429,7 @@ namespace cryptonote
     }
 
     result.base_miner     = result.adjusted_base_reward - (result.governance + result.service_node_paid);
-    result.base_miner_fee = loki_context.fee;
+    result.base_miner_fee = sevabit_context.fee;
     return true;
   }
 

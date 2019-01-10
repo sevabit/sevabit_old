@@ -225,7 +225,7 @@ namespace cryptonote
      /**
       * @brief mark the deregister vote as having been relayed in the vote pool
       */
-     virtual void set_deregister_votes_relayed(const std::vector<loki::service_node_deregister::vote>& votes);
+     virtual void set_deregister_votes_relayed(const std::vector<sevabit::service_node_deregister::vote>& votes);
 
      /**
       * @brief gets the miner instance
@@ -826,7 +826,7 @@ namespace cryptonote
 
       * @return Whether the vote was added to the partial deregister pool
       */
-     bool add_deregister_vote(const loki::service_node_deregister::vote& vote, vote_verification_context &vvc);
+     bool add_deregister_vote(const sevabit::service_node_deregister::vote& vote, vote_verification_context &vvc);
 
      /**
       * @brief Get the keypair for this service node.
@@ -1054,7 +1054,7 @@ namespace cryptonote
 
      uint64_t m_test_drop_download_height = 0; //!< height under which to drop incoming blocks, if doing so
 
-     loki::deregister_vote_pool m_deregister_vote_pool;
+     sevabit::deregister_vote_pool m_deregister_vote_pool;
      tx_memory_pool m_mempool; //!< transaction pool instance
      Blockchain m_blockchain_storage; //!< Blockchain instance
      service_nodes::service_node_list m_service_node_list;

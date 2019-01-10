@@ -132,7 +132,7 @@ namespace service_nodes
   };
 
   template<typename T>
-  void loki_shuffle(std::vector<T>& a, uint64_t seed);
+  void sevabit_shuffle(std::vector<T>& a, uint64_t seed);
 
   static constexpr uint64_t QUEUE_SWARM_ID = 0;
 

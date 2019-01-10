@@ -101,7 +101,7 @@ namespace daemonizer
     }
     else
     {
-      //LOG_PRINT_L0("SevaBit '" << LOKI_RELEASE_NAME << "' (v" << LOKI_VERSION_FULL);
+      //LOG_PRINT_L0("SevaBit '" << SEVABIT_RELEASE_NAME << "' (v" << SEVABIT_VERSION_FULL);
       return executor.run_interactive(vm);
     }
   }

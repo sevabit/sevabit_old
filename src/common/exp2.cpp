@@ -40,7 +40,7 @@
 static_assert(std::numeric_limits<double>::is_iec559, "We require IEEE standard compliant doubles.");
 
 double
-loki_exp2 (double x)
+sevabit_exp2 (double x)
 {
   /* exp2(x) = exp(x*log(2)).
      If we would compute it like this, there would be rounding errors for
@@ -94,7 +94,7 @@ loki_exp2 (double x)
        truncate the series after the z^5 term.  */
 
   {
-    double nm = loki_round (x * 256.0); /* = 256 * n + m */
+    double nm = sevabit_round (x * 256.0); /* = 256 * n + m */
     double z = (x * 256.0 - nm) * (LOG2_BY_256 * 0.5);
 
 /* Coefficients of the power series for tanh(z).  */
@@ -116,7 +116,7 @@ loki_exp2 (double x)
 
     double exp_y = (1.0 + tanh_z) / (1.0 - tanh_z);
 
-    int n = (int) loki_round (nm * (1.0 / 256.0));
+    int n = (int) sevabit_round (nm * (1.0 / 256.0));
     int m = (int) nm - 256 * n;
 
     /* exp_table[i] = exp((i - 128) * log(2)/256).

@@ -34,8 +34,8 @@
 #include <boost/program_options/variables_map.hpp>
 #include <string>
 
-#undef LOKI_DEFAULT_LOG_CATEGORY
-#define LOKI_DEFAULT_LOG_CATEGORY "daemon"
+#undef SEVABIT_DEFAULT_LOG_CATEGORY
+#define SEVABIT_DEFAULT_LOG_CATEGORY "daemon"
 
 namespace daemonize
 {

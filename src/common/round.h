@@ -29,4 +29,4 @@
 
 #pragma once
 
-double loki_round(double);
+double sevabit_round(double);

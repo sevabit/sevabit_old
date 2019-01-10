@@ -292,7 +292,7 @@ namespace cryptonote
 
     struct request
     {
-      std::vector<loki::service_node_deregister::vote> votes;
+      std::vector<sevabit::service_node_deregister::vote> votes;
       BEGIN_KV_SERIALIZE_MAP()
         KV_SERIALIZE_CONTAINER_POD_AS_BLOB(votes)
       END_KV_SERIALIZE_MAP()

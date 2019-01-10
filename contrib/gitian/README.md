@@ -87,16 +87,16 @@ Initial Gitian Setup
 The `gitian-build.py` script will checkout different release tags, so it's best to copy it:
 
 ```bash
-cp loki/contrib/gitian/gitian-build.py .
+cp sevabit/contrib/gitian/gitian-build.py .
 ```
 
 Setup the required environment, you only need to do this once:
 
 ```
-./gitian-build.py --setup loki-user 1.0.4
+./gitian-build.py --setup sevabit-user 1.0.4
 ```
 
-Where `loki-user` is your Github name and `1.0.4` is the version tag you want to build (without `v`).
+Where `sevabit-user` is your Github name and `1.0.4` is the version tag you want to build (without `v`).
 
 While gitian and this build script does provide a way for you to sign the build directly, it is recommended to sign in a seperate step. 
 This script is only there for convenience. Seperate steps for building can still be taken.
@@ -105,15 +105,15 @@ fork the gitian.sigs repository and clone it on your host machine,
 or pass the signed assert file back to your build machine.
 
 ```
-git clone git@github.com:loki-project/gitian.sigs.git
-git remote add loki-user git@github.com:loki-user/gitian.sigs.git
+git clone git@github.com:sevabit-project/gitian.sigs.git
+git remote add sevabit-user git@github.com:sevabit-user/gitian.sigs.git
 ```
 
 Build Binaries
 -----------------------------
 To build the most recent tag:
 
- `./gitian-build.py --detach-sign --no-commit -b loki-user 1.0.4`
+ `./gitian-build.py --detach-sign --no-commit -b sevabit-user 1.0.4`
 
 To speed up the build, use `-j 5 -m 5000` as the first arguments, where `5` is the number of CPU's you allocated to the VM plus one, and 5000 is a little bit less than then the MB's of RAM you allocated. If there is memory corruption on your machine, try to tweak these values.
 
@@ -122,15 +122,15 @@ If all went well, this produces a number of (uncommited) `.assert` files in the 
 If you do detached, offline signing, you need to copy these uncommited changes to your host machine, where you can sign them. For example:
 
 ```
-export NAME=loki-user
+export NAME=sevabit-user
 export VERSION=1.0.4
-gpg --output $VERSION-linux/$NAME/loki-linux-$VERSION-build.assert.sig --detach-sign $VERSION-linux/$NAME/loki-linux-$VERSION-build.assert
-gpg --output $VERSION-osx-unsigned/$NAME/loki-osx-$VERSION-build.assert.sig --detach-sign $VERSION-osx-unsigned/$NAME/loki-osx-$VERSION-build.assert
-gpg --output $VERSION-win-unsigned/$NAME/loki-win-$VERSION-build.assert.sig --detach-sign $VERSION-win-unsigned/$NAME/loki-win-$VERSION-build.assert
+gpg --output $VERSION-linux/$NAME/sevabit-linux-$VERSION-build.assert.sig --detach-sign $VERSION-linux/$NAME/sevabit-linux-$VERSION-build.assert
+gpg --output $VERSION-osx-unsigned/$NAME/sevabit-osx-$VERSION-build.assert.sig --detach-sign $VERSION-osx-unsigned/$NAME/sevabit-osx-$VERSION-build.assert
+gpg --output $VERSION-win-unsigned/$NAME/sevabit-win-$VERSION-build.assert.sig --detach-sign $VERSION-win-unsigned/$NAME/sevabit-win-$VERSION-build.assert
 ```
 
 Make a pull request (both the `.assert` and `.assert.sig` files) to the
-[loki-project/gitian.sigs](https://github.com/loki-project/gitian.sigs/) repository:
+[sevabit-project/gitian.sigs](https://github.com/sevabit-project/gitian.sigs/) repository:
 
 ```
 git checkout -b 1.0.4
@@ -139,8 +139,8 @@ git push --set-upstream $NAME 1.0.4
 ```
 
 ```bash
-    gpg --detach-sign ${VERSION}-linux/${SIGNER}/loki-linux-*-build.assert
-    gpg --detach-sign ${VERSION}-win-unsigned/${SIGNER}/loki-win-*-build.assert
-    gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/loki-osx-*-build.assert
+    gpg --detach-sign ${VERSION}-linux/${SIGNER}/sevabit-linux-*-build.assert
+    gpg --detach-sign ${VERSION}-win-unsigned/${SIGNER}/sevabit-win-*-build.assert
+    gpg --detach-sign ${VERSION}-osx-unsigned/${SIGNER}/sevabit-osx-*-build.assert
 ```
 

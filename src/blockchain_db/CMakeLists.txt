@@ -54,9 +54,9 @@ if (BERKELEY_DB)
   )
 endif()
 
-loki_private_headers(blockchain_db
+sevabit_private_headers(blockchain_db
   ${crypto_private_headers})
-loki_add_library(blockchain_db
+sevabit_add_library(blockchain_db
   ${blockchain_db_sources}
   ${blockchain_db_headers}
   ${blockchain_db_private_headers})

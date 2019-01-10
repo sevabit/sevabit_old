@@ -1,7 +1,7 @@
 # SevaBit
 
 <p align="center">
-    <a href="https://github.com/sevabit-project/sevabit/commits/dev"><img alt="pipeline status" src="https://gitlab.com/lokiproject/sevabit/badges/dev/pipeline.svg" /></a>
+    <a href="https://github.com/sevabit-project/sevabit/commits/dev"><img alt="pipeline status" src="https://gitlab.com/sevabitproject/sevabit/badges/dev/pipeline.svg" /></a>
 </p>
 
 Copyright (c) 2018 The SevaBit Project.   
@@ -22,7 +22,7 @@ Portions Copyright (c) 2012-2013 The Cryptonote developers.
 
 ## Information
 
-SevaBit is a private cryptocurrency based on Monero. SevaBit currently offers an incentivised full node layer, over the coming months we will be looking to support a secondary p2p network (Lokinet) and a messenger that offers private communications based on the Signal protocol (SevaBit Messenger).
+SevaBit is a private cryptocurrency based on Monero. SevaBit currently offers an incentivised full node layer, over the coming months we will be looking to support a secondary p2p network (Sevabitnet) and a messenger that offers private communications based on the Signal protocol (SevaBit Messenger).
 
 More information on the project can be found on the website and in the whitepaper.
 

@@ -87,8 +87,8 @@ public:
   void stop() {}
 
   // TODO(sevabit): Write tests
-  bool add_deregister_vote(const loki::service_node_deregister::vote& vote, cryptonote::vote_verification_context &vvc) { return true; }
-  virtual void set_deregister_votes_relayed(const std::vector<loki::service_node_deregister::vote>& votes) {}
+  bool add_deregister_vote(const sevabit::service_node_deregister::vote& vote, cryptonote::vote_verification_context &vvc) { return true; }
+  virtual void set_deregister_votes_relayed(const std::vector<sevabit::service_node_deregister::vote>& votes) {}
 };
 
 typedef nodetool::node_server<cryptonote::t_cryptonote_protocol_handler<test_core>> Server;
