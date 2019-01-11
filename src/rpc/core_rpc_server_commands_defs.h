@@ -896,6 +896,7 @@ struct COMMAND_RPC_GET_PEER_LIST_FULL
       std::string status;
       uint64_t height;
       uint64_t target_height;
+      uint64_t already_generated_coins;
       uint64_t difficulty;
       uint64_t target;
       uint64_t tx_count;
@@ -930,6 +931,7 @@ struct COMMAND_RPC_GET_PEER_LIST_FULL
         KV_SERIALIZE(status)
         KV_SERIALIZE(height)
         KV_SERIALIZE(target_height)
+        KV_SERIALIZE(already_generated_coins)
         KV_SERIALIZE(difficulty)
         KV_SERIALIZE(target)
         KV_SERIALIZE(tx_count)
