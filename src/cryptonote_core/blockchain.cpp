@@ -91,10 +91,10 @@ static const struct {
   time_t time;
 } mainnet_hard_forks[] = {
   // version 7 from the start of the blockchain, inhereted from Monero mainnet
-  { network_version_7,               1,      0, 1543540000 },
-  { network_version_8,               2,  0, 1543540001 },
-  { network_version_9_service_nodes, 3, 0, 1543540002 },
-  { network_version_10_bulletproofs, 4, 0, 1543540003 }, // 2018-12-13 23:30UTC
+  { network_version_7,               1,      0, 1503046577 },
+  { network_version_8,               64324,  0, 1533006000 },
+  { network_version_9_service_nodes, 101250, 0, 1537444800 },
+  { network_version_10_bulletproofs, 161849, 0, 1544743800 }, // 2018-12-13 23:30UTC
 };
 
 static const struct {
@@ -1564,14 +1564,12 @@ bool Blockchain::handle_alternative_block(const block& b, const crypto::hash& id
     CHECK_AND_ASSERT_MES(current_diff, false, "!!!!!!! DIFFICULTY OVERHEAD !!!!!!!");
     crypto::hash proof_of_work = null_hash;
     get_block_longhash(bei.bl, proof_of_work, bei.height);
-   
-   // POW VALIDATION
-   // if(!check_hash(proof_of_work, current_diff))
-   // {
-   //   MERROR_VER("Block with id: " << id << std::endl << " for alternative chain, does not have enough proof of work: " << proof_of_work << std::endl << " expected difficulty: " << current_diff);
-   //   bvc.m_verifivation_failed = true;
-   //   return false;
-   // }
+    if(!check_hash(proof_of_work, current_diff))
+    {
+      MERROR_VER("Block with id: " << id << std::endl << " for alternative chain, does not have enough proof of work: " << proof_of_work << std::endl << " expected difficulty: " << current_diff);
+      bvc.m_verifivation_failed = true;
+      return false;
+    }
 
     if(!prevalidate_miner_transaction(b, bei.height))
     {
@@ -1845,10 +1843,15 @@ bool Blockchain::get_output_distribution(uint64_t amount, uint64_t from_height, 
   {
     std::vector<uint64_t> heights;
     heights.reserve(to_height + 1 - start_height);
-    for (uint64_t h = start_height; h <= to_height; ++h)
+    uint64_t real_start_height = start_height > 0 ? start_height-1 : start_height;
+    for (uint64_t h = real_start_height; h <= to_height; ++h)
       heights.push_back(h);
     distribution = m_db->get_block_cumulative_rct_outputs(heights);
-    base = 0;
+    if (start_height > 0)
+    {
+      base = distribution[0];
+      distribution.erase(distribution.begin());
+    }
     return true;
   }
   else
@@ -3726,16 +3729,6 @@ bool Blockchain::add_new_block(const block& bl_, block_verification_context& bvc
   CRITICAL_REGION_LOCAL(m_tx_pool);//to avoid deadlock lets lock tx_pool for whole add/reorganize process
   CRITICAL_REGION_LOCAL1(m_blockchain_lock);
   m_db->block_txn_start(true);
-
-
-  // INVALIDATE BLOCK 9446
-  if(bl.timestamp == 1546502574) {
-    LOG_PRINT_L3("block 9446 forked | shutdown");
-    m_db->block_txn_stop();
-    m_blocks_txs_check.clear();
-   return false;
-  }
- 
   if(have_block(id))
   {
     LOG_PRINT_L3("block with id = " << id << " already exists");

@@ -297,7 +297,7 @@ namespace nodetool
     bool m_hide_my_port;
     bool m_no_igd;
     bool m_offline;
-    bool m_no_ipv6;
+    bool m_use_ipv6;
     std::atomic<bool> m_save_graph;
     std::atomic<bool> is_closing;
     std::unique_ptr<boost::thread> mPeersLoggerThread;
@@ -311,7 +311,7 @@ namespace nodetool
     epee::math_helper::once_a_time_seconds<1> m_connections_maker_interval;
     epee::math_helper::once_a_time_seconds<60*30, false> m_peerlist_store_interval;
     epee::math_helper::once_a_time_seconds<60> m_gray_peerlist_housekeeping_interval;
-    epee::math_helper::once_a_time_seconds<900, false> m_incoming_connections_interval;
+    epee::math_helper::once_a_time_seconds<3600, false> m_incoming_connections_interval;
 
     std::string m_bind_ip;
     std::string m_bind_ipv6_address;
@@ -348,7 +348,7 @@ namespace nodetool
     extern const command_line::arg_descriptor<std::string> arg_p2p_bind_ipv6_address;
     extern const command_line::arg_descriptor<std::string, false, true, 2> arg_p2p_bind_port;
     extern const command_line::arg_descriptor<std::string, false, true, 2> arg_p2p_bind_port_ipv6;
-    extern const command_line::arg_descriptor<bool>        arg_p2p_no_ipv6;
+    extern const command_line::arg_descriptor<bool>        arg_p2p_use_ipv6;
     extern const command_line::arg_descriptor<uint32_t>    arg_p2p_external_port;
     extern const command_line::arg_descriptor<bool>        arg_p2p_allow_local_ip;
     extern const command_line::arg_descriptor<std::vector<std::string> > arg_p2p_add_peer;
