@@ -78,23 +78,7 @@ namespace cryptonote
       END_KV_SERIALIZE_MAP()
     };
   };
-struct COMMAND_RPC_GET_PEER_LIST_FULL
-  {
-    struct request
-    {
-        BEGIN_KV_SERIALIZE_MAP()
-        END_KV_SERIALIZE_MAP()
-    };
-     struct response
-    {
-      std::vector<std::string> peers;
-      std::string status;
-       BEGIN_KV_SERIALIZE_MAP()
-        KV_SERIALIZE(peers)
-        KV_SERIALIZE(status)
-      END_KV_SERIALIZE_MAP()
-    };
-  };
+
   struct COMMAND_RPC_GET_BLOCKS_FAST
   {
 
@@ -896,7 +880,6 @@ struct COMMAND_RPC_GET_PEER_LIST_FULL
       std::string status;
       uint64_t height;
       uint64_t target_height;
-      uint64_t already_generated_coins;
       uint64_t difficulty;
       uint64_t target;
       uint64_t tx_count;
@@ -931,7 +914,6 @@ struct COMMAND_RPC_GET_PEER_LIST_FULL
         KV_SERIALIZE(status)
         KV_SERIALIZE(height)
         KV_SERIALIZE(target_height)
-        KV_SERIALIZE(already_generated_coins)
         KV_SERIALIZE(difficulty)
         KV_SERIALIZE(target)
         KV_SERIALIZE(tx_count)
@@ -2325,7 +2307,8 @@ struct COMMAND_RPC_GET_PEER_LIST_FULL
     };
   };
 
-  struct COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD
+
+  struct COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD_RAW
   {
     struct request
     {
@@ -2334,6 +2317,43 @@ struct COMMAND_RPC_GET_PEER_LIST_FULL
       BEGIN_KV_SERIALIZE_MAP()
         KV_SERIALIZE(args)
         KV_SERIALIZE(make_friendly)
+      END_KV_SERIALIZE_MAP()
+    };
+
+    struct response
+    {
+      std::string status;
+      std::string registration_cmd;
+
+      BEGIN_KV_SERIALIZE_MAP()
+        KV_SERIALIZE(status)
+        KV_SERIALIZE(registration_cmd)
+      END_KV_SERIALIZE_MAP()
+    };
+  };
+
+  struct COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD
+  { 
+    struct contribution_t {
+      std::string address;
+      uint64_t amount;
+
+      BEGIN_KV_SERIALIZE_MAP()
+        KV_SERIALIZE(address)
+        KV_SERIALIZE(amount)
+      END_KV_SERIALIZE_MAP()
+    };
+
+    struct request
+    {
+      bool autostake;
+      std::string operator_cut;
+      std::vector<contribution_t> contributions;
+
+      BEGIN_KV_SERIALIZE_MAP()
+        KV_SERIALIZE(autostake)
+        KV_SERIALIZE(operator_cut)
+        KV_SERIALIZE(contributions)
       END_KV_SERIALIZE_MAP()
     };
 

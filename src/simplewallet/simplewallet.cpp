@@ -122,7 +122,7 @@ typedef cryptonote::simple_wallet sw;
 #define SCOPED_WALLET_UNLOCK() \
   LOCK_IDLE_SCOPE(); \
   boost::optional<tools::password_container> pwd_container = boost::none; \
-  if (m_wallet->ask_password() && !m_wallet->watch_only() && !(pwd_container = get_and_verify_password())) { return true; } \
+  if (m_wallet->ask_password() && !(pwd_container = get_and_verify_password())) { return true; } \
   tools::wallet_keys_unlocker unlocker(*m_wallet, pwd_container);
 
 enum TransferType {
@@ -2282,6 +2282,14 @@ bool simple_wallet::set_device_name(const std::vector<std::string> &args/* = std
   return true;
 }
 
+bool simple_wallet::set_fork_on_autostake(const std::vector<std::string> &args/* = std::vector<std::string>()*/)
+{
+  parse_bool_and_use(args[1], [&](bool r) {
+    m_wallet->fork_on_autostake(r);
+  });
+  return true;
+}
+
 bool simple_wallet::help(const std::vector<std::string> &args/* = std::vector<std::string>()*/)
 {
   if(args.empty())
@@ -2571,8 +2579,8 @@ simple_wallet::simple_wallet()
                            tr("Verify a signature on the contents of a file."));
   m_cmd_binder.set_handler("export_key_images",
                            boost::bind(&simple_wallet::export_key_images, this, _1),
-                           tr("export_key_images <file>"),
-                           tr("Export a signed set of key images to a <file>."));
+                           tr("export_key_images <file> [requested-only]"),
+                           tr("Export a signed set of key images to a <file>. By default exports all key images. If 'requested-only' is specified export key images for outputs not previously imported."));
   m_cmd_binder.set_handler("import_key_images",
                            boost::bind(&simple_wallet::import_key_images, this, _1),
                            tr("import_key_images <file>"),
@@ -2716,6 +2724,7 @@ bool simple_wallet::set_variable(const std::vector<std::string> &args)
     success_msg_writer() << "segregation-height = " << m_wallet->segregation_height();
     success_msg_writer() << "ignore-fractional-outputs = " << m_wallet->ignore_fractional_outputs();
     success_msg_writer() << "device_name = " << m_wallet->device_name();
+    success_msg_writer() << "fork-on-autostake = " << m_wallet->fork_on_autostake();
     return true;
   }
   else
@@ -2771,6 +2780,7 @@ bool simple_wallet::set_variable(const std::vector<std::string> &args)
     CHECK_SIMPLE_VARIABLE("segregation-height", set_segregation_height, tr("unsigned integer"));
     CHECK_SIMPLE_VARIABLE("ignore-fractional-outputs", set_ignore_fractional_outputs, tr("0 or 1"));
     CHECK_SIMPLE_VARIABLE("device-name", set_device_name, tr("<device_name[:device_spec]>"));
+    CHECK_SIMPLE_VARIABLE("fork-on-autostake", set_fork_on_autostake, tr("0 or 1"));
   }
   fail_msg_writer() << tr("set: unrecognized argument(s)");
   return true;
@@ -5501,6 +5511,8 @@ static bool prompt_autostaking_non_trusted_contributors_warning()
   return result;
 }
 
+const int AUTOSTAKE_INTERVAL = 60 * 40; // once every 40 minutes.
+
 bool simple_wallet::register_service_node(const std::vector<std::string> &args_)
 {
   if (!try_connect_to_daemon())
@@ -5537,9 +5549,11 @@ bool simple_wallet::register_service_node(const std::vector<std::string> &args_)
   std::vector<uint64_t> portions;
   uint64_t portions_for_operator;
   bool autostake;
-  if (!service_nodes::convert_registration_args(m_wallet->nettype(), address_portions_args, addresses, portions, portions_for_operator, autostake))
+  std::string err_msg;
+  if (!service_nodes::convert_registration_args(m_wallet->nettype(), address_portions_args, addresses, portions, portions_for_operator, autostake, err_msg))
   {
     fail_msg_writer() << tr("Could not convert registration args");
+    if (err_msg != "") fail_msg_writer() << err_msg;
     fail_msg_writer() << tr("Usage: register_service_node [index=<N1>[,<N2>,...]] [priority] [auto] <operator cut> <address1> <fraction1> [<address2> <fraction2> [...]] <expiration timestamp> <service node pubkey> <signature>");
     return true;
   }
@@ -5613,30 +5627,24 @@ bool simple_wallet::register_service_node(const std::vector<std::string> &args_)
     }
 
     stop();
-    m_idle_run.store(false, std::memory_order_relaxed);
-    m_wallet->stop();
+
+#ifndef WIN32 // NOTE: Fork not supported on Windows
+    if (m_wallet->fork_on_autostake())
     {
-      boost::unique_lock<boost::mutex> lock(m_idle_mutex);
-      m_idle_cond.notify_one();
+      success_msg_writer(true /*color*/) << tr("Successfully entered autostaking mode, this wallet is moving into the background to automatically renew your service node every period.");
+      tools::threadpool::getInstance().stop();
+      posix::fork("");
+      tools::threadpool::getInstance().start();
+    }
+    else
+#endif
+    {
+      success_msg_writer(true /*color*/) << tr("Successfully entered autostaking mode, please leave this wallet running to automatically renew your service node every period.");
     }
 
-    m_idle_thread.join();
-#ifndef WIN32
-    success_msg_writer(true /*color*/) << tr("Successfully entered autostaking mode, this wallet is moving into the background to automatically renew your service node every period.");
-    tools::threadpool::getInstance().stop();
-    posix::fork("");
-    tools::threadpool::getInstance().start();
-#else
-    success_msg_writer(true /*color*/) << tr("Successfully entered autostaking mode, please leave this wallet running to automatically renew your service node every period.");
-#endif
-    m_idle_run.store(true, std::memory_order_relaxed);
     while (true)
     {
-      if (!m_idle_run.load(std::memory_order_relaxed))
-        break;
       if (!register_service_node_main(service_node_key_as_str, expiration_timestamp, address, priority, portions, extra, subaddr_indices, autostake))
-        break;
-      if (!m_idle_run.load(std::memory_order_relaxed))
         break;
       m_idle_cond.wait_for(lock, boost::chrono::seconds(AUTOSTAKE_INTERVAL)); // lock implicitly defined in SCOPED_WALLET_UNLOCK()
     }
@@ -6115,30 +6123,25 @@ bool simple_wallet::stake(const std::vector<std::string> &args_)
       success_msg_writer(false/*color*/) << "\n";
     }
 
-    m_idle_run.store(false, std::memory_order_relaxed);
-    m_wallet->stop();
+    stop();
+#ifndef WIN32 // NOTE: Fork not supported on Windows
+    if (m_wallet->fork_on_autostake())
     {
-      boost::unique_lock<boost::mutex> lock(m_idle_mutex);
-      m_idle_cond.notify_one();
+      success_msg_writer(true /*color*/) << tr("Successfully entered autostaking mode, this wallet is moving into the background to automatically renew your service node every period.");
+      tools::threadpool::getInstance().stop();
+      posix::fork("");
+      tools::threadpool::getInstance().start();
+    }
+    else
+#endif
+    {
+      success_msg_writer(true /*color*/) << tr("Successfully entered autostaking mode, please leave this wallet running to automatically renew your service node every period.");
     }
 
-    m_idle_thread.join();
-#ifndef WIN32
-    success_msg_writer() << tr("Entering autostaking mode, forking to background...");
-    tools::threadpool::getInstance().stop();
-    posix::fork("");
-    tools::threadpool::getInstance().start();
-#else
-    success_msg_writer() << tr("Entering autostaking mode, please leave this wallet running.");
-#endif
-    m_idle_run.store(true, std::memory_order_relaxed);
+
     while (true)
     {
-      if (!m_idle_run.load(std::memory_order_relaxed))
-        break;
       if (!stake_main(service_node_key, info, priority, subaddr_indices, amount, amount_fraction, autostake))
-        break;
-      if (!m_idle_run.load(std::memory_order_relaxed))
         break;
       m_idle_cond.wait_for(lock, boost::chrono::seconds(AUTOSTAKE_INTERVAL)); // lock implicitly defined in SCOPED_WALLET_UNLOCK()
     }
@@ -7736,7 +7739,7 @@ bool simple_wallet::get_transfers(std::vector<std::string>& local_args, std::vec
 
         // NOTE: If any output is locked at all, consider the transfer locked.
         uint64_t lock_duration = unlock_time - pd.m_block_height;
-        locked |= (!m_wallet->is_tx_spendtime_unlocked(pd.m_unlock_time, pd.m_block_height));
+        locked |= (!m_wallet->is_transfer_unlocked(unlock_time, pd.m_block_height));
         if (lock_duration >= staking_duration) type = tools::pay_type::stake;
       }
 
@@ -7978,10 +7981,24 @@ bool simple_wallet::export_transfers(const std::vector<std::string>& args_)
     // ignore unconfirmed transfers in running balance
     if (transfer.confirmed)
     {
-      if (transfer.type == tools::pay_type::in)
-        running_balance += transfer.amount;
-      else
-        running_balance -= transfer.amount + transfer.fee;
+      switch (transfer.type)
+      {
+        case tools::pay_type::in:
+        case tools::pay_type::miner:
+        case tools::pay_type::service_node:
+        case tools::pay_type::governance:
+          running_balance += transfer.amount;
+          break;
+        case tools::pay_type::stake:
+          running_balance -= transfer.fee;
+          break;
+        case tools::pay_type::out:
+          running_balance -= transfer.amount + transfer.fee;
+          break;
+        default:
+          fail_msg_writer() << tr("Warning: Unhandled pay type, this is most likely a developer error, please report it to the Sevabit developers.");
+          break;
+      }
     }
 
     char const UNLOCKED[] = "unlocked";
@@ -8910,9 +8927,9 @@ bool simple_wallet::export_key_images(const std::vector<std::string> &args)
     fail_msg_writer() << tr("command not supported by HW wallet");
     return true;
   }
-  if (args.size() != 1)
+  if (args.size() != 1 && args.size() != 2)
   {
-    fail_msg_writer() << tr("usage: export_key_images <filename>");
+    fail_msg_writer() << tr("usage: export_key_images <filename> [requested-only]");
     return true;
   }
   if (m_wallet->watch_only())
@@ -8926,9 +8943,12 @@ bool simple_wallet::export_key_images(const std::vector<std::string> &args)
   if (m_wallet->confirm_export_overwrite() && !check_file_overwrite(filename))
     return true;
 
+  /// whether to export requested key images only
+  bool requested_only = (args.size() == 2 && args[1] == "requested-only");
+
   try
   {
-    if (!m_wallet->export_key_images(filename))
+    if (!m_wallet->export_key_images(filename, requested_only))
     {
       fail_msg_writer() << tr("failed to save file ") << filename;
       return true;
