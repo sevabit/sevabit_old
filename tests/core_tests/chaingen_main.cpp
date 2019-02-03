@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
       GENERATE_AND_PLAY(gen_block_has_invalid_tx);
       GENERATE_AND_PLAY(gen_block_is_too_big);
 
-      // TODO(loki): We also want to run these tx tests on deregistration tx's
+      // TODO(sevabit): We also want to run these tx tests on deregistration tx's
       // as well because they special case and run under very different code
       // paths from the regular tx path
       // Transaction verification tests
@@ -170,7 +170,7 @@ int main(int argc, char* argv[])
       GENERATE_AND_PLAY(gen_tx_invalid_input_amount);
       GENERATE_AND_PLAY(gen_tx_input_wo_key_offsets);
       GENERATE_AND_PLAY(gen_tx_key_offset_points_to_foreign_key);
-      GENERATE_AND_PLAY(gen_tx_sender_key_offset_not_exist); // TODO(loki): Revisit this test
+      GENERATE_AND_PLAY(gen_tx_sender_key_offset_not_exist); // TODO(sevabit): Revisit this test
       GENERATE_AND_PLAY(gen_tx_key_image_not_derive_from_tx_key);
       GENERATE_AND_PLAY(gen_tx_key_image_is_invalid);
       GENERATE_AND_PLAY(gen_tx_txout_to_key_has_invalid_key);
