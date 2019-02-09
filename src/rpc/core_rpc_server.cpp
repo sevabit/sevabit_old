@@ -171,6 +171,7 @@ namespace cryptonote
     ++res.height; // turn top block height into blockchain height
     res.top_block_hash = string_tools::pod_to_hex(top_hash);
     res.target_height = m_core.get_target_blockchain_height();
+	res.already_generated_coins = m_core.get_blockchain_storage().get_db().get_block_already_generated_coins(res.height - 1); 
     res.difficulty = m_core.get_blockchain_storage().get_difficulty_for_next_block();
     res.target = m_core.get_blockchain_storage().get_difficulty_target();
     res.tx_count = m_core.get_blockchain_storage().get_total_transactions() - res.height; //without coinbase
@@ -1568,6 +1569,7 @@ namespace cryptonote
     ++res.height; // turn top block height into blockchain height
     res.top_block_hash = string_tools::pod_to_hex(top_hash);
     res.target_height = m_core.get_target_blockchain_height();
+	res.already_generated_coins = m_core.get_blockchain_storage().get_db().get_block_already_generated_coins(res.height - 1); 
     res.difficulty = m_core.get_blockchain_storage().get_difficulty_for_next_block();
     res.target = DIFFICULTY_TARGET_V2;
     res.tx_count = m_core.get_blockchain_storage().get_total_transactions() - res.height; //without coinbase
@@ -1895,6 +1897,51 @@ namespace cryptonote
     m_p2p.m_config.m_net_config.max_in_connection_count = req.in_peers;
     if (n_delete)
       m_p2p.delete_in_connections(n_delete);
+    res.status = CORE_RPC_STATUS_OK;
+    return true;
+  }
+  //------------------------------------------------------------------------------------------------------------------------------
+  bool core_rpc_server::on_get_peers(const COMMAND_RPC_GET_PEER_LIST_FULL::request& req, COMMAND_RPC_GET_PEER_LIST_FULL::response& res)
+  {
+       // PRIMERO GUARDAS EN UNA VARIABLE EL MANAGER CON SU LISTA
+      // PARA ESO LLAMO A LA FUNCION
+      // ME PIDE 2 ARGUMENTOS PARA LLAMARLOS
+      // ENTONCES INICIALIZO
+      // ANDA LENTO
+      // LO COPIARE HAHA
+       // TIMER
+      PERF_TIMER(on_get_peers);
+       // DECLARO LAS 2 LISTAS
+      std::list<nodetool::peerlist_entry> white_list;
+      std::list<nodetool::peerlist_entry> gray_list;
+       // LE PASO LAS LISTAS AL MANAGER PARA QUE LOS LLENE
+      m_p2p.get_peerlist_manager().get_peerlist_full(gray_list, white_list);
+       // RECORRO LA LISTA BLANCA
+      for (auto & entry : white_list)
+      {
+         // PREGUNTO SI ES IPV4
+          if (entry.adr.get_type_id() == epee::net_utils::ipv4_network_address::ID) {
+              // SI LO ES ... LA PRINTEO Y AGREGO
+              res.peers.emplace_back(entry.adr.str()); // ESO ES TODO
+          }
+          // SINO, NADA
+      }
+       // LUEGO RECORRO LA GRAY LIST
+      for (auto & entry : gray_list)
+      {
+          // Y LO MISMO
+        if (entry.adr.get_type_id() == epee::net_utils::ipv4_network_address::ID) {
+             // SI LO ES ... LA PRINTEO Y AGREGO
+            res.peers.emplace_back(entry.adr.str()); // ESO ES TODO
+         }
+      }
+       //m_p2p.get_peerlist_manager().get_peerlist_full()
+       // LUEGO RECORRES LA LISTA QUE TRAJO (FOREACH)
+      // POR CADA RESULTADO AÑADES EL STRING AL VECTOR DE RES.PEERS :)
+      // SUERTE :)
+      // M_P2P ES EL MANAGER ok
+     // CHAO TODO
+    // COMPILA
     res.status = CORE_RPC_STATUS_OK;
     return true;
   }
