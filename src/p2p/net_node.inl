@@ -72,7 +72,7 @@ namespace nodetool
     command_line::add_arg(desc, arg_p2p_bind_ipv6_address);
     command_line::add_arg(desc, arg_p2p_bind_port, false);
     command_line::add_arg(desc, arg_p2p_bind_port_ipv6, false);
-    command_line::add_arg(desc, arg_p2p_no_ipv6);
+    command_line::add_arg(desc, arg_p2p_use_ipv6);
     command_line::add_arg(desc, arg_p2p_external_port);
     command_line::add_arg(desc, arg_p2p_allow_local_ip);
     command_line::add_arg(desc, arg_p2p_add_peer);
@@ -272,7 +272,7 @@ namespace nodetool
     m_allow_local_ip = command_line::get_arg(vm, arg_p2p_allow_local_ip);
     m_no_igd = command_line::get_arg(vm, arg_no_igd);
     m_offline = command_line::get_arg(vm, cryptonote::arg_offline);
-    m_no_ipv6 = command_line::get_arg(vm, arg_p2p_no_ipv6);
+    m_use_ipv6 = command_line::get_arg(vm, arg_p2p_use_ipv6);
 
     if (command_line::has_arg(vm, arg_p2p_add_peer))
     {
@@ -413,10 +413,8 @@ namespace nodetool
     {
       full_addrs.insert("seed1.sevabit.com:22048");   
       full_addrs.insert("seed2.sevabit.com:22048");
-      //full_addrs.insert("192.250.236.196:22022"); //add more nodes
-//      full_addrs.insert("162.208.9.194:22022"); //add more nodes
-//      full_addrs.insert("162.208.9.194:22022"); //add more nodes
-//  full_addrs.insert("51.38.133.145:22022"); //add more nodes
+      //full_addrs.insert("192.168.236.196:22048"); //add more nodes
+
     }
     return full_addrs;
   }
@@ -571,18 +569,18 @@ namespace nodetool
 
     //try to bind
     MINFO("Binding (IPv4) on " << m_bind_ip << ":" << m_port);
-    if (!m_no_ipv6)
+    if (m_use_ipv6)
     {
       MINFO("Binding (IPv6) on " << m_bind_ipv6_address << ":" << m_port_ipv6);
     }
 
-    res = m_net_server.init_server(m_port, m_bind_ip, m_port_ipv6, m_bind_ipv6_address, m_no_ipv6);
+    res = m_net_server.init_server(m_port, m_bind_ip, m_port_ipv6, m_bind_ipv6_address, m_use_ipv6);
     CHECK_AND_ASSERT_MES(res, false, "Failed to bind server");
 
     m_listening_port = m_net_server.get_binded_port();
     MLOG_GREEN(el::Level::Info, "Net service bound to " << m_bind_ip << ":" << m_listening_port);
 
-    if (!m_no_ipv6)
+    if (m_use_ipv6)
     {
       m_listening_port_ipv6 = m_net_server.get_binded_port_ipv6();
       MLOG_GREEN(el::Level::Info, "Net service bound to " << m_bind_ipv6_address << ":" << m_listening_port_ipv6);
@@ -595,7 +593,7 @@ namespace nodetool
     if(!m_no_igd)
     {
       add_upnp_port_mapping_v4(m_listening_port);
-      if (!m_no_ipv6)
+      if (m_use_ipv6)
       {
 	add_upnp_port_mapping_v6(m_listening_port);
       }
@@ -1365,12 +1363,19 @@ namespace nodetool
   template<class t_payload_net_handler>
   bool node_server<t_payload_net_handler>::check_incoming_connections()
   {
-    if (m_offline || m_hide_my_port)
+    if (m_offline)
       return true;
     if (get_incoming_connections_count() == 0)
     {
-      const el::Level level = el::Level::Warning;
-      MCLOG_RED(level, "global", "No incoming connections - check firewalls/routers allow port " << get_this_peer_port());
+      if (m_hide_my_port || m_config.m_net_config.max_in_connection_count == 0)
+      {
+        MGINFO("Incoming connections disabled, enable them for full connectivity");
+      }
+      else
+      {
+        const el::Level level = el::Level::Warning;
+        MCLOG_RED(level, "global", "No incoming connections - check firewalls/routers allow port " << get_this_peer_port());
+      }
     }
     return true;
   }

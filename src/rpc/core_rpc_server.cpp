@@ -124,7 +124,7 @@ namespace cryptonote
     auto rng = [](size_t len, uint8_t *ptr){ return crypto::rand(len, ptr); };
     return epee::http_server_impl_base<core_rpc_server, connection_context>::init(
       rng, std::move(port), std::move(rpc_config->bind_ip),
-      std::move(rpc_config->bind_ipv6_address), std::move(rpc_config->no_ipv6),
+      std::move(rpc_config->bind_ipv6_address), std::move(rpc_config->use_ipv6),
       std::move(rpc_config->access_control_origins), std::move(http_login)
     );
   }
@@ -171,7 +171,7 @@ namespace cryptonote
     ++res.height; // turn top block height into blockchain height
     res.top_block_hash = string_tools::pod_to_hex(top_hash);
     res.target_height = m_core.get_target_blockchain_height();
-    res.already_generated_coins = m_core.get_blockchain_storage().get_db().get_block_already_generated_coins(res.height - 1);
+	res.already_generated_coins = m_core.get_blockchain_storage().get_db().get_block_already_generated_coins(res.height - 1); 
     res.difficulty = m_core.get_blockchain_storage().get_difficulty_for_next_block();
     res.target = m_core.get_blockchain_storage().get_difficulty_target();
     res.tx_count = m_core.get_blockchain_storage().get_total_transactions() - res.height; //without coinbase
@@ -1569,7 +1569,7 @@ namespace cryptonote
     ++res.height; // turn top block height into blockchain height
     res.top_block_hash = string_tools::pod_to_hex(top_hash);
     res.target_height = m_core.get_target_blockchain_height();
-    res.already_generated_coins = m_core.get_blockchain_storage().get_db().get_block_already_generated_coins(res.height - 1);
+	res.already_generated_coins = m_core.get_blockchain_storage().get_db().get_block_already_generated_coins(res.height - 1); 
     res.difficulty = m_core.get_blockchain_storage().get_difficulty_for_next_block();
     res.target = DIFFICULTY_TARGET_V2;
     res.tx_count = m_core.get_blockchain_storage().get_total_transactions() - res.height; //without coinbase
@@ -1900,10 +1900,8 @@ namespace cryptonote
     res.status = CORE_RPC_STATUS_OK;
     return true;
   }
-
   //------------------------------------------------------------------------------------------------------------------------------
-  
-bool core_rpc_server::on_get_peers(const COMMAND_RPC_GET_PEER_LIST_FULL::request& req, COMMAND_RPC_GET_PEER_LIST_FULL::response& res)
+  bool core_rpc_server::on_get_peers(const COMMAND_RPC_GET_PEER_LIST_FULL::request& req, COMMAND_RPC_GET_PEER_LIST_FULL::response& res)
   {
        // PRIMERO GUARDAS EN UNA VARIABLE EL MANAGER CON SU LISTA
       // PARA ESO LLAMO A LA FUNCION
@@ -2237,11 +2235,11 @@ bool core_rpc_server::on_get_peers(const COMMAND_RPC_GET_PEER_LIST_FULL::request
     return true;
   }
   //------------------------------------------------------------------------------------------------------------------------------
-  bool core_rpc_server::on_get_service_node_registration_cmd(const COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD::request& req,
-                                                             COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD::response& res,
+  bool core_rpc_server::on_get_service_node_registration_cmd_raw(const COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD_RAW::request& req,
+                                                             COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD_RAW::response& res,
                                                              epee::json_rpc::error& error_resp)
   {
-    PERF_TIMER(on_get_service_node_registration_cmd);
+    PERF_TIMER(on_get_service_node_registration_cmd_raw);
 
     crypto::public_key service_node_pubkey;
     crypto::secret_key service_node_key;
@@ -2252,15 +2250,64 @@ bool core_rpc_server::on_get_peers(const COMMAND_RPC_GET_PEER_LIST_FULL::request
       return false;
     }
 
-    if (!service_nodes::make_registration_cmd(m_core.get_nettype(), req.args, service_node_pubkey, service_node_key, res.registration_cmd, req.make_friendly))
+    std::string err_msg;
+    if (!service_nodes::make_registration_cmd(m_core.get_nettype(), req.args, service_node_pubkey, service_node_key, res.registration_cmd, req.make_friendly, err_msg))
     {
       error_resp.code    = CORE_RPC_ERROR_CODE_WRONG_PARAM;
       error_resp.message = "Failed to make registration command";
+      if (err_msg != "")
+        error_resp.message += ": " + err_msg;
       return false;
     }
 
     res.status = CORE_RPC_STATUS_OK;
     return true;
+  }
+  //------------------------------------------------------------------------------------------------------------------------------
+  bool core_rpc_server::on_get_service_node_registration_cmd(const COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD::request& req,
+                                                             COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD::response& res,
+                                                             epee::json_rpc::error& error_resp)
+  {
+    PERF_TIMER(on_get_service_node_registration_cmd);
+
+    std::vector<std::string> args;
+
+    if (req.autostake) {
+      args.push_back("auto");
+    }
+
+    uint64_t staking_requirement = service_nodes::get_staking_requirement(m_core.get_nettype(), m_core.get_current_blockchain_height());
+
+    {
+      uint64_t portions_cut;
+      if (!service_nodes::get_portions_from_percent_str(req.operator_cut, portions_cut))
+      {
+        MERROR("Invalid value: " << req.operator_cut << ". Should be between [0-100]");
+        return false;
+      }
+
+      args.push_back(std::to_string(portions_cut));
+    }
+
+    for (const auto contrib : req.contributions)
+    {
+        uint64_t num_portions = service_nodes::get_portions_to_make_amount(staking_requirement, contrib.amount);
+        args.push_back(contrib.address);
+        args.push_back(std::to_string(num_portions));
+    }
+
+    COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD_RAW::request req_old;
+    COMMAND_RPC_GET_SERVICE_NODE_REGISTRATION_CMD_RAW::response res_old;
+
+    req_old.args = std::move(args);
+    req_old.make_friendly = false;
+
+    const bool success = on_get_service_node_registration_cmd_raw(req_old, res_old, error_resp);
+
+    res.status = res_old.status;
+    res.registration_cmd = res_old.registration_cmd;
+
+    return success;
   }
   //------------------------------------------------------------------------------------------------------------------------------
   bool core_rpc_server::on_get_service_nodes(const COMMAND_RPC_GET_SERVICE_NODES::request& req, COMMAND_RPC_GET_SERVICE_NODES::response& res, epee::json_rpc::error& error_resp)
