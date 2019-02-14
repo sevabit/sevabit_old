@@ -163,21 +163,16 @@ namespace service_nodes
 
     uint64_t height = m_core.get_current_blockchain_height();
     int version     = m_core.get_hard_fork_version(height);
-    LOG_PRINT_L1("Handle proof1");
-    LOG_PRINT_L1("proof sn_version: " << proof.snode_version_major );
     if (version<cryptonote::network_version_9_service_nodes)
       return false; // NOTE: Only care about network version for now
 
-    LOG_PRINT_L1("Proof2");
     CRITICAL_REGION_LOCAL(m_lock);
     if (m_uptime_proof_seen[pubkey] >= now - (UPTIME_PROOF_FREQUENCY_IN_SECONDS / 2))
       return false; // already received one uptime proof for this node recently.
 
-    LOG_PRINT_L1("Proof3");
     crypto::hash hash = make_hash(pubkey, timestamp);
     if (!crypto::check_signature(hash, pubkey, sig))
       return false;
-    LOG_PRINT_L1("proof added for other SN");
     m_uptime_proof_seen[pubkey] = now;
     return true;
   }
