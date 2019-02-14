@@ -1586,8 +1586,8 @@ Cette transaction sera déverrouillée au bloc %llu, dans approximativement %s j
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="2283"/>
-        <source>Donate &lt;amount&gt; to the development team (donate.getmonero.org).</source>
-        <translation>Donner &lt;montant&gt; à l&apos;équipe de développement (donate.getmonero.org).</translation>
+        <source>Donate &lt;amount&gt; to the development team (donate.getsevabit.org).</source>
+        <translation>Donner &lt;montant&gt; à l&apos;équipe de développement (donate.getsevabit.org).</translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="2290"/>
@@ -2133,7 +2133,7 @@ Pending or Failed:               &quot;failed&quot;|&quot;pending&quot;, &quot;o
 To start synchronizing with the daemon, use the &quot;refresh&quot; command.
 Use the &quot;help&quot; command to see the list of available commands.
 Use &quot;help &lt;command&gt;&quot; to see a command&apos;s documentation.
-Always use the &quot;exit&quot; command when closing monero-wallet-cli to save 
+Always use the &quot;exit&quot; command when closing sevabit-wallet-cli to save 
 your current session&apos;s state. Otherwise, you might need to synchronize 
 your wallet again (your wallet keys are NOT at risk in any case).
 </source>
@@ -2141,7 +2141,7 @@ your wallet again (your wallet keys are NOT at risk in any case).
 Pour commencer la synchronisation avec le démon, utilisez la commande &quot;refresh&quot;.
 Utilisez la commande &quot;help&quot; pour voir la liste des commandes disponibles.
 Utilisez &quot;help &lt;commande&gt;&quot; pour voir la documentation d&apos;une commande.
-Utilisez toujours la commande &quot;exit&quot; pour fermer monero-wallet-cli pour sauvegarder 
+Utilisez toujours la commande &quot;exit&quot; pour fermer sevabit-wallet-cli pour sauvegarder 
 l&apos;état de votre session. Sinon, vous pourriez avoir besoin de synchroniser 
 votre portefeuille à nouveau (mais les clés de votre portefeuille ne risquent rien).
 </translation>
@@ -2878,8 +2878,8 @@ Attention&#xa0;: Certaines clés d&apos;entrées étant dépensées sont issues 
    Set the fee to default/unimportant/normal/elevated/priority.
  confirm-missing-payment-id &lt;1|0&gt;
  ask-password &lt;0|1|2   (or never|action|decrypt)&gt;
- unit &lt;monero|millinero|micronero|nanonero|piconero&gt;
-   Set the default monero (sub-)unit.
+ unit &lt;sevabit|millinero|micronero|nanonero|piconero&gt;
+   Set the default sevabit (sub-)unit.
  min-outputs-count [n]
    Try to keep at least that many outputs of value at least min-outputs-value.
  min-outputs-value [n]
@@ -2922,8 +2922,8 @@ subaddress-lookahead &lt;major&gt;:&lt;minor&gt;
    Utiliser les frais pour la priorité par défaut/peu importante/normale/élevée/prioritaire.
  confirm-missing-payment-id &lt;1|0&gt;
  ask-password &lt;0|1|2 (ou never|action|decrypt)&gt;
- unit &lt;monero|millinero|micronero|nanonero|piconero&gt;
-   Définir la (sous-)unité monero par défaut.
+ unit &lt;sevabit|millinero|micronero|nanonero|piconero&gt;
+   Définir la (sous-)unité sevabit par défaut.
  min-outputs-count [n]
    Essayer de garder au moins ce nombre de sorties d&apos;une valeur d&apos;au moins min-outputs-value.
  min-outputs-value [n]
@@ -3064,8 +3064,8 @@ subaddress-lookahead &lt;major&gt;:&lt;minor&gt;
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="2650"/>
-        <source>monero, millinero, micronero, nanonero, piconero</source>
-        <translation>monero, millinero, micronero, nanonero, piconero</translation>
+        <source>sevabit, millinero, micronero, nanonero, piconero</source>
+        <translation>sevabit, millinero, micronero, nanonero, piconero</translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="2661"/>
@@ -3536,8 +3536,8 @@ subaddress-lookahead &lt;major&gt;:&lt;minor&gt;
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="5799"/>
-        <source>Donating %s %s to The Monero Project (donate.getmonero.org or %s).</source>
-        <translation>Don de %s %s à The Monero Project (donate.getmonero.org ou %s).</translation>
+        <source>Donating %s %s to The Monero Project (donate.getsevabit.org or %s).</source>
+        <translation>Don de %s %s à The Monero Project (donate.getsevabit.org ou %s).</translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="5971"/>
@@ -4681,11 +4681,11 @@ Sorties par *&#xa0;: </translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="8074"/>
-        <source>This is the command line monero wallet. It needs to connect to a monero
+        <source>This is the command line sevabit wallet. It needs to connect to a sevabit
 daemon to work correctly.
 WARNING: Do not reuse your Monero keys on another fork, UNLESS this fork has key reuse mitigations built in. Doing so will harm your privacy.</source>
-        <translation>Ceci est le portefeuille monero en ligne de commande.
-Il a besoin de se connecter à un démon monero pour fonctionner correctement.
+        <translation>Ceci est le portefeuille sevabit en ligne de commande.
+Il a besoin de se connecter à un démon sevabit pour fonctionner correctement.
 ATTENTION : Ne réutilisez pas vos clés Monero avec un autre fork, À MOINS QUE ce fork inclue des mitigations contre la réutilisation des clés. Faire ceci nuira à votre confidentialité.</translation>
     </message>
     <message>
@@ -4705,8 +4705,8 @@ ATTENTION : Ne réutilisez pas vos clés Monero avec un autre fork, À MOINS QUE
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="133"/>
-        <source>The newly created transaction will not be relayed to the monero network</source>
-        <translation>La transaction nouvellement créée ne sera pas transmise au réseau monero</translation>
+        <source>The newly created transaction will not be relayed to the sevabit network</source>
+        <translation>La transaction nouvellement créée ne sera pas transmise au réseau sevabit</translation>
     </message>
     <message>
         <location filename="../src/simplewallet/simplewallet.cpp" line="134"/>
@@ -4953,13 +4953,13 @@ ATTENTION : Ne réutilisez pas vos clés Monero avec un autre fork, À MOINS QUE
     </message>
     <message>
         <location filename="../src/wallet/wallet2.cpp" line="1271"/>
-        <source>Password is needed to compute key image for incoming monero</source>
-        <translation>Le mot de passe est requis pour calculer l&apos;image de clé pour les moneros entrants</translation>
+        <source>Password is needed to compute key image for incoming sevabit</source>
+        <translation>Le mot de passe est requis pour calculer l&apos;image de clé pour les sevabits entrants</translation>
     </message>
     <message>
         <location filename="../src/wallet/wallet2.cpp" line="1272"/>
-        <source>Invalid password: password is needed to compute key image for incoming monero</source>
-        <translation>Mot de passe invalide : le mot de passe est requis pour calculer l&apos;image de clé pour les moneros entrants</translation>
+        <source>Invalid password: password is needed to compute key image for incoming sevabit</source>
+        <translation>Mot de passe invalide : le mot de passe est requis pour calculer l&apos;image de clé pour les sevabits entrants</translation>
     </message>
     <message>
         <location filename="../src/wallet/wallet2.cpp" line="3496"/>
@@ -5038,10 +5038,10 @@ ATTENTION : Ne réutilisez pas vos clés Monero avec un autre fork, À MOINS QUE
     </message>
     <message>
         <location filename="../src/wallet/wallet_rpc_server.cpp" line="3495"/>
-        <source>This is the RPC monero wallet. It needs to connect to a monero
+        <source>This is the RPC sevabit wallet. It needs to connect to a sevabit
 daemon to work correctly.</source>
-        <translation>Ceci est le portefeuille monero par RPC. Il a besoin de se
-connecter à un démon monero pour fonctionner correctement.</translation>
+        <translation>Ceci est le portefeuille sevabit par RPC. Il a besoin de se
+connecter à un démon sevabit pour fonctionner correctement.</translation>
     </message>
     <message>
         <location filename="../src/wallet/wallet_rpc_server.cpp" line="3336"/>
@@ -5152,10 +5152,10 @@ connecter à un démon monero pour fonctionner correctement.</translation>
     </message>
     <message>
         <location filename="../src/wallet/wallet_args.cpp" line="144"/>
-        <source>This is the command line monero wallet. It needs to connect to a monero
+        <source>This is the command line sevabit wallet. It needs to connect to a sevabit
 daemon to work correctly.</source>
-        <translation>Ceci est le portefeuille monero en ligne de commande. Il a besoin de se
-connecter à un démon monero pour fonctionner correctement.</translation>
+        <translation>Ceci est le portefeuille sevabit en ligne de commande. Il a besoin de se
+connecter à un démon sevabit pour fonctionner correctement.</translation>
     </message>
     <message>
         <location filename="../src/wallet/wallet_args.cpp" line="169"/>
