@@ -163,8 +163,8 @@ namespace service_nodes
 
     uint64_t height = m_core.get_current_blockchain_height();
     int version     = m_core.get_hard_fork_version(height);
-    if (version >= cryptonote::network_version_10_bulletproofs && proof.snode_version_major != 2)
-      return false; // NOTE: Only care about major version for now
+    if (version<cryptonote::network_version_9_service_nodes)
+      return false; // NOTE: Only care about network version for now
 
     CRITICAL_REGION_LOCAL(m_lock);
     if (m_uptime_proof_seen[pubkey] >= now - (UPTIME_PROOF_FREQUENCY_IN_SECONDS / 2))
@@ -173,7 +173,6 @@ namespace service_nodes
     crypto::hash hash = make_hash(pubkey, timestamp);
     if (!crypto::check_signature(hash, pubkey, sig))
       return false;
-
     m_uptime_proof_seen[pubkey] = now;
     return true;
   }
