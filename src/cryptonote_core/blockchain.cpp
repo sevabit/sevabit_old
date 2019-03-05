@@ -94,7 +94,8 @@ static const struct {
   { network_version_7,               1, 0, 1543540000 },
   { network_version_8,               2, 0, 1543540001 },
   { network_version_9_service_nodes, 3, 0, 1543540002 },
-  { network_version_10_bulletproofs, 4, 0, 1543540003 }, // 2018-12-13 23:30UTC
+  { network_version_10_bulletproofs, 4, 0, 1543540003 },
+  { network_version_11_swarms,       5, 0, 1543540004 }, // 2018-12-13 23:30UTC
 };
 
 static const struct {

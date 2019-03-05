@@ -203,12 +203,12 @@ namespace cryptonote
     return result;
   }
 
-  uint64_t service_node_reward_formula(uint64_t base_reward, int hard_fork_version,uint64_t height)
+  uint64_t service_node_reward_formula(uint64_t base_reward, int hard_fork_version)
   {
-    if (height > 45000){
-    return hard_fork_version >= 9 ? ((base_reward / 10) *2 ) : 0;
-    }else{
-    return hard_fork_version >= 9 ? ((base_reward / 10) *4 ) : 0;
+    if(hard_fork_version >= 11) {
+      return hard_fork_version >= 9 ? ((base_reward / 10) * 7 ) : 0;
+    } else {
+      return hard_fork_version >= 9 ? ((base_reward / 10) * 4 ) : 0;
     }
   }
 
